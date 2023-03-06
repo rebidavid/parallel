@@ -23,7 +23,7 @@ int main() {
     clock_t begin_randomszam = clock();
     for (int i = 0; i < n; i++)
     {
-        int szam = (rand() % (1000 - 500 + 1)) + 500;
+        int szam = (rand() % (10 - 50 + 1)) + 50;
         fprintf(fp,"%d ",szam);
     }
     clock_t end_randomszam = clock();
