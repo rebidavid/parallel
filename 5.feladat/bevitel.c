@@ -6,13 +6,13 @@
  
 // Generates and prints 'count' random
 // numbers in range [lower, upper].
-void printRandoms(int szam, int szam2,
+void printRandoms(int a, int b,
                             int count)
 {
     int i;
     for (i = 0; i < count; i++) {
         int num = (rand() %
-        (szam2 - szam + 1)) + szam;
+        (b - a + 1)) + a;
         printf("%d ", num);
     }
 }
@@ -20,17 +20,17 @@ void printRandoms(int szam, int szam2,
 // Driver code
 int main()
 {
-    int szam, szam2, count = 1;
+    int a, b, count = 1;
 
     printf("Adj meg két számot szóközzel elválasztva!\n");
 
-    scanf("%d %d", &szam, &szam2);
+    scanf("%d %d", &a, &b);
 
     // Use current time as
     // seed for random generator
     srand(time(0));
  
-    printRandoms(szam, szam2, count);
+    printRandoms(a, b, count);
  
     return 0;
 }
