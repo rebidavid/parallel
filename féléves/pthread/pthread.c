@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <sys/time.h>
 
 #define MATRIX_SIZE 3
 #define NUM_THREADS 3
 
-struct ThreadData {
+struct ThreadData
+{
     int thread_id;
     int *a;
     int *b;
@@ -66,10 +68,15 @@ int main()
         pthread_create(&threads[i], NULL, matrixAddition, (void *)&thread_data[i]);
     }
 
+    struct timeval start_time, end_time;
+    gettimeofday(&start_time, NULL);
+
     for (int i = 0; i < NUM_THREADS; i++)
     {
         pthread_join(threads[i], NULL);
     }
+
+    gettimeofday(&end_time, NULL);
 
     pthread_barrier_destroy(&barrier);
 
@@ -84,6 +91,17 @@ int main()
     printf("Matrix Addition Result:\n");
     printMatrix(result, MATRIX_SIZE);
     printf("\n");
+
+    long start_sec = start_time.tv_sec;
+    long start_usec = start_time.tv_usec;
+    long end_sec = end_time.tv_sec;
+    long end_usec = end_time.tv_usec;
+
+    long seconds = end_sec - start_sec;
+    long microseconds = end_usec - start_usec;
+    double elapsed_time = seconds + microseconds / 1e6;
+
+    printf("Elapsed Time: %.6f seconds\n", elapsed_time);
 
     return 0;
 }

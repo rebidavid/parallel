@@ -1,19 +1,16 @@
 CC = gcc
-CFLAGS = -Wall -O2 -fopenmp
+CFLAGS = -std=c99 -Wall -Wextra -fopenmp
+LDFLAGS = -fopenmp
 
 TARGET = openmp
-SRCS = openmp.c
-OBJS = $(SRCS:.c=.o)
-
-.PHONY: all clean
 
 all: $(TARGET)
 
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
+$(TARGET): openmp.o
+	$(CC) $(LDFLAGS) -o $(TARGET) openmp.o
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $<
+openmp.o: openmp.c
+	$(CC) $(CFLAGS) -c openmp.c
 
 clean:
-	rm -f $(TARGET) $(OBJS)
+	rm -f $(TARGET) *.o

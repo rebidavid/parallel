@@ -1,17 +1,16 @@
 CC = gcc
-CFLAGS = -Wall -O2 -DCL_TARGET_OPENCL_VERSION=220
+CFLAGS = -std=c99 -Wall -Wextra
 LDFLAGS = -lOpenCL
-TARGET = opencl
-SRCS = opencl.c
-OBJS = $(SRCS:.c=.o)
 
-all: $(TARGET)
+EXECUTABLE = opencl
 
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+all: $(EXECUTABLE)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+$(EXECUTABLE): opencl.o
+	$(CC) -o $@ $^ $(LDFLAGS)
+
+opencl.o: opencl.c
+	$(CC) $(CFLAGS) -c $<
 
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -f $(EXECUTABLE) *.o

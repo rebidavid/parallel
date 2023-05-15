@@ -36,7 +36,7 @@ int main()
     context = clCreateContext(NULL, 1, &device, NULL, NULL, &err);
 
     // OpenCL parancssor létrehozása
-    queue = clCreateCommandQueue(context, device, 0, &err);
+    queue = clCreateCommandQueue(context, device, CL_QUEUE_PROFILING_ENABLE, &err);
 
     // Kernel program betöltése és fordítása
     const char *source = "__kernel void matrix_add(__global const int* a, __global const int* b, __global int* result) {\n"
@@ -62,12 +62,27 @@ int main()
 
     // Kernel argumentumok beállítása
     clSetKernelArg(kernel, 0, sizeof(cl_mem), &a_buf);
-        clSetKernelArg(kernel, 1, sizeof(cl_mem), &b_buf);
+    clSetKernelArg(kernel, 1, sizeof(cl_mem), &b_buf);
     clSetKernelArg(kernel, 2, sizeof(cl_mem), &result_buf);
+
+    // Időméréshez szükséges változók deklarálása
+    cl_event event;
+    cl_ulong start_time, end_time;
+    double elapsed_time;
 
     // Kernel futtatása
     size_t global_size[2] = {MATRIX_SIZE, MATRIX_SIZE};
-    err = clEnqueueNDRangeKernel(queue, kernel, 2, NULL, global_size, NULL, 0, NULL, NULL);
+    err = clEnqueueNDRangeKernel(queue, kernel, 2, NULL, global_size, NULL, 0, NULL, &event);
+
+    // Várakozás a végrehajtás befejezésére
+    clFinish(queue);
+
+    // Időbélyegzés lekérdezése
+    clGetEventProfilingInfo(event, CL_PROFILING_COMMAND_START, sizeof(cl_ulong), &start_time, NULL);
+    clGetEventProfilingInfo(event, CL_PROFILING_COMMAND_END, sizeof(cl_ulong), &end_time, NULL);
+
+    // Futtatási idő számítása másodpercben
+    elapsed_time = (end_time - start_time) * 1.0e-9; // Konvertálás nanoszekundumokból másodpercekbe
 
     // Eredmények visszamásolása a hoszt memóriába
     err = clEnqueueReadBuffer(queue, result_buf, CL_TRUE, 0, sizeof(int) * MATRIX_SIZE * MATRIX_SIZE, result, 0, NULL, NULL);
@@ -92,6 +107,8 @@ int main()
     printf("Matrix Addition Result:\n");
     printMatrix(result, MATRIX_SIZE);
     printf("\n");
+
+    printf("Execution Time: %f seconds\n", elapsed_time);
 
     return 0;
 }

@@ -1,11 +1,12 @@
 CC = gcc
-CFLAGS = -Wall -O2 -pthread
+CFLAGS = -Wall -Wextra -pthread
+
 TARGET = pthread
 
 all: $(TARGET)
 
-$(TARGET): pthread.c
-	$(CC) $(CFLAGS) -o $@ $<
+$(TARGET): $(TARGET).c
+	$(CC) $(CFLAGS) -o $(TARGET) $(TARGET).c
 
 clean:
 	rm -f $(TARGET)

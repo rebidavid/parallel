@@ -22,6 +22,8 @@ int main()
     int b[MATRIX_SIZE * MATRIX_SIZE] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
     int result[MATRIX_SIZE * MATRIX_SIZE];
 
+    double start_time = omp_get_wtime(); // Start measuring time
+
     #pragma omp parallel for collapse(2)
     for (int i = 0; i < MATRIX_SIZE; i++)
     {
@@ -30,6 +32,8 @@ int main()
             result[i * MATRIX_SIZE + j] = a[i * MATRIX_SIZE + j] + b[i * MATRIX_SIZE + j];
         }
     }
+
+    double end_time = omp_get_wtime(); // End measuring time
 
     printf("Matrix A:\n");
     printMatrix(a, MATRIX_SIZE);
@@ -42,6 +46,9 @@ int main()
     printf("Matrix Addition Result:\n");
     printMatrix(result, MATRIX_SIZE);
     printf("\n");
+
+    double execution_time = end_time - start_time;
+    printf("Execution Time: %f seconds\n", execution_time);
 
     return 0;
 }
