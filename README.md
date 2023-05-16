@@ -1,6 +1,6 @@
-# Párhuzamos algoritmus beadandó
+# Párhuzamos algoritmus beadandó javítás
 
-A féléves beadandóban megírt kódok célja két 3x3-as mátrix összeadása volt, ahol a munka elosztása több szálon történik.
+A féléves beadandóban megírt kódok célja két általunk megadott méretű mátrix összeadása volt, ahol a munka elosztása több szálon történik.
 Szabadon választott techonlógiának az Opencl-t választottam.
 
 ## Pthread
