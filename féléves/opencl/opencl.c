@@ -56,6 +56,7 @@ int main()
     int b[MATRIX_SIZE * MATRIX_SIZE] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
     int result[MATRIX_SIZE * MATRIX_SIZE];
 
+    // OpenCL memóriaterületek létrehozása és adatok másolása a távoli eszközre
     cl_mem a_buf = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int) * MATRIX_SIZE * MATRIX_SIZE, a, &err);
     cl_mem b_buf = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int) * MATRIX_SIZE * MATRIX_SIZE, b, &err);
     cl_mem result_buf = clCreateBuffer(context, CL_MEM_WRITE_ONLY, sizeof(int) * MATRIX_SIZE * MATRIX_SIZE, NULL, &err);

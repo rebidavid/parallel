@@ -6,6 +6,7 @@
 #define MATRIX_SIZE 3
 #define NUM_THREADS 3
 
+// Az egyes szálak által használt adatstruktúra
 struct ThreadData
 {
     int thread_id;
@@ -15,6 +16,7 @@ struct ThreadData
     pthread_barrier_t *barrier;
 };
 
+// Mátrix kiírása
 void printMatrix(int *matrix, int size)
 {
     for (int i = 0; i < size; i++)
@@ -27,12 +29,14 @@ void printMatrix(int *matrix, int size)
     }
 }
 
+// A szál által végrehajtott függvény, ahol a mátrixok összeadása történik
 void *matrixAddition(void *threadarg)
 {
     struct ThreadData *data = (struct ThreadData *)threadarg;
     int start_row = data->thread_id * (MATRIX_SIZE / NUM_THREADS);
     int end_row = (data->thread_id + 1) * (MATRIX_SIZE / NUM_THREADS);
 
+    // Mátrixok összeadása
     for (int i = start_row; i < end_row; i++)
     {
         for (int j = 0; j < MATRIX_SIZE; j++)
@@ -41,6 +45,7 @@ void *matrixAddition(void *threadarg)
         }
     }
 
+    // Szinkronizáció a barrier segítségével
     pthread_barrier_wait(data->barrier);
 
     return NULL;
@@ -56,8 +61,10 @@ int main()
     struct ThreadData thread_data[NUM_THREADS];
     pthread_barrier_t barrier;
 
+    // Barrier inicializálása a szálak számával
     pthread_barrier_init(&barrier, NULL, NUM_THREADS);
 
+    // Szálak létrehozása és adataik beállítása
     for (int i = 0; i < NUM_THREADS; i++)
     {
         thread_data[i].thread_id = i;
@@ -71,6 +78,7 @@ int main()
     struct timeval start_time, end_time;
     gettimeofday(&start_time, NULL);
 
+    // Szálak befejezésének várása
     for (int i = 0; i < NUM_THREADS; i++)
     {
         pthread_join(threads[i], NULL);
@@ -78,6 +86,7 @@ int main()
 
     gettimeofday(&end_time, NULL);
 
+    // Barrier megsemmisítése
     pthread_barrier_destroy(&barrier);
 
     printf("Matrix A:\n");
@@ -92,6 +101,7 @@ int main()
     printMatrix(result, MATRIX_SIZE);
     printf("\n");
 
+    // Az eltelt idő meghatározása és kiírása
     long start_sec = start_time.tv_sec;
     long start_usec = start_time.tv_usec;
     long end_sec = end_time.tv_sec;

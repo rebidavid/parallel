@@ -1,16 +1,12 @@
 CC = gcc
-CFLAGS = -std=c99 -Wall -Wextra -fopenmp
-LDFLAGS = -fopenmp
+CFLAGS = -Wall -Wextra -fopenmp
 
 TARGET = openmp
 
 all: $(TARGET)
 
-$(TARGET): openmp.o
-	$(CC) $(LDFLAGS) -o $(TARGET) openmp.o
-
-openmp.o: openmp.c
-	$(CC) $(CFLAGS) -c openmp.c
+$(TARGET): $(TARGET).c
+	$(CC) $(CFLAGS) -o $(TARGET) $(TARGET).c
 
 clean:
-	rm -f $(TARGET) *.o
+	rm -f $(TARGET)

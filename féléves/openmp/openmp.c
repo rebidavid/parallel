@@ -18,13 +18,16 @@ void printMatrix(int *matrix, int size)
 
 int main()
 {
+    // Deklarálás és inicializálás
     int a[MATRIX_SIZE * MATRIX_SIZE] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
     int b[MATRIX_SIZE * MATRIX_SIZE] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
     int result[MATRIX_SIZE * MATRIX_SIZE];
 
-    double start_time = omp_get_wtime(); // Start measuring time
+    // Időmérés kezdete
+    double start_time = omp_get_wtime();
 
-    #pragma omp parallel for collapse(2)
+// Párhuzamos for ciklusok
+#pragma omp parallel for collapse(2)
     for (int i = 0; i < MATRIX_SIZE; i++)
     {
         for (int j = 0; j < MATRIX_SIZE; j++)
@@ -33,8 +36,10 @@ int main()
         }
     }
 
-    double end_time = omp_get_wtime(); // End measuring time
+    // Időmérés vége
+    double end_time = omp_get_wtime();
 
+    // Eredmények kiírása
     printf("Matrix A:\n");
     printMatrix(a, MATRIX_SIZE);
     printf("\n");
@@ -47,6 +52,7 @@ int main()
     printMatrix(result, MATRIX_SIZE);
     printf("\n");
 
+    // Végrehajtási idő kiírása
     double execution_time = end_time - start_time;
     printf("Execution Time: %f seconds\n", execution_time);
 
