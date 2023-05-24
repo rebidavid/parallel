@@ -19,7 +19,7 @@ void printMatrix(int *matrix, int size)
 // A mátrixok összeadását végző függvény
 void matrixAddition(int *a, int *b, int *result, int matrix_size)
 {
-#pragma omp parallel for
+#pragma omp parallel for //automatikusan több szálat indít a ciklusban lévő iterációk feldolgozására
     for (int i = 0; i < matrix_size; i++)
     {
         for (int j = 0; j < matrix_size; j++)
@@ -28,6 +28,7 @@ void matrixAddition(int *a, int *b, int *result, int matrix_size)
         }
     }
 }
+//létrehoz és kezdeményez egy szálcsomópontot, amelyben a ciklus iterációi párhuzamosan végrehajthatók
 
 int main()
 {
@@ -39,15 +40,17 @@ int main()
 
     printf("Enter number of threads: ");
     scanf("%d", &num_threads);
-    
+
     struct timeval start_time, end_time;
     gettimeofday(&start_time, NULL);
 
+    // Memóriaterületek lefoglalása a mátrixoknak
     int *a = malloc(matrix_size * matrix_size * sizeof(int));
     int *b = malloc(matrix_size * matrix_size * sizeof(int));
     int *result = malloc(matrix_size * matrix_size * sizeof(int));
 
     printf("Generating random values for Matrix A...\n");
+    // Mátrix A véletlenszerű értékekkel való inicializálása
     for (int i = 0; i < matrix_size; i++)
     {
         for (int j = 0; j < matrix_size; j++)
@@ -57,6 +60,7 @@ int main()
     }
 
     printf("Generating random values for Matrix B...\n");
+    // Mátrix B véletlenszerű értékekkel való inicializálása
     for (int i = 0; i < matrix_size; i++)
     {
         for (int j = 0; j < matrix_size; j++)
@@ -65,19 +69,23 @@ int main()
         }
     }
 
+    // Mátrixok összeadása
     matrixAddition(a, b, result, matrix_size);
 
-    printf("Matrix A:\n");
+    /*printf("Matrix A:\n");
+    // Mátrix A kiíratása
     printMatrix(a, matrix_size);
     printf("\n");
 
     printf("Matrix B:\n");
+    // Mátrix B kiíratása
     printMatrix(b, matrix_size);
     printf("\n");
 
     printf("Matrix Addition Result:\n");
+    // Összeadás eredményének kiíratása
     printMatrix(result, matrix_size);
-    printf("\n");
+    printf("\n");*/
 
     gettimeofday(&end_time, NULL);
 

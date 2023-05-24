@@ -3,14 +3,16 @@
 #include <pthread.h>
 #include <sys/time.h>
 
+
+//barrier: lehetővé teszi, hogy a szálak megálljanak addig, amíg minden szál el ne ért a barrierhez
 // Az egyes szálak által használt adatstruktúra
 struct ThreadData
 {
     int thread_id;
-    int *a;
+    int *a;         //bemeneti mátrix
     int *b;
-    int *result;
-    int matrix_size;
+    int *result;    //eredmény mátrix
+    int matrix_size; // mátrix méret
     int num_threads; // Hozzáadott adattag - szálak száma
     pthread_barrier_t *barrier;
 };
@@ -55,12 +57,13 @@ int main()
     int matrix_size;
     int num_threads;
 
+    //adatok bekérése
     printf("Enter matrix size: ");
     scanf("%d", &matrix_size);
 
     printf("Enter number of threads: ");
     scanf("%d", &num_threads);
-    
+
     struct timeval start_time, end_time;
     gettimeofday(&start_time, NULL);
 
@@ -73,7 +76,7 @@ int main()
     {
         for (int j = 0; j < matrix_size; j++)
         {
-            a[i * matrix_size + j] = rand() % 100; // Random értékek 0 és 99 között
+            a[i * matrix_size + j] = rand() % 10; // Random értékek 0 és 9 között
         }
     }
 
@@ -82,7 +85,7 @@ int main()
     {
         for (int j = 0; j < matrix_size; j++)
         {
-            b[i * matrix_size + j] = rand() % 100; // Random értékek 0 és 99 között
+            b[i * matrix_size + j] = rand() % 10; // Random értékek 0 és 9 között
         }
     }
 
@@ -114,7 +117,7 @@ int main()
     // Barrier megsemmisítése
     pthread_barrier_destroy(&barrier);
 
-    printf("Matrix A:\n");
+    /*printf("Matrix A:\n");
     printMatrix(a, matrix_size);
     printf("\n");
 
@@ -124,7 +127,7 @@ int main()
 
     printf("Matrix Addition Result:\n");
     printMatrix(result, matrix_size);
-    printf("\n");
+    printf("\n");*/
 
     gettimeofday(&end_time, NULL);
 
