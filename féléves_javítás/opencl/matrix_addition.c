@@ -1,7 +1,8 @@
+#define CL_TARGET_OPENCL_VERSION 220
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
-#include <math.h>
 #include <CL/cl.h>
 
 // Mátrix kiírása
